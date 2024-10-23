@@ -15,13 +15,20 @@ class Graph():
         self.graph = [[-1 for column in range(n)]
                       for row in range(n)]
 
-    def printSolution(self, dist):
+    def printSolution(self):
         print("Vertex \tDistance from Source")
         for node in range(self.V):
-            print(node, "\t", dist[node])
+            print(node, "\t", self.dist[node])
             
+    def printGraph(self):
+        for i in range(self.V):
+            print(self.graph[i])
+
     def distance(self, node):
-        return self.dist[node]
+        d = self.dist[node]
+        if d == sys.maxsize:
+            return -1
+        return d
 
     def add_directed_edge(self, u, v, w):
         self.graph[u][v] = w
@@ -37,6 +44,7 @@ class Graph():
 
         # Initialize minimum distance for next node
         min = sys.maxsize
+        min_index = -1
 
         # Search not nearest vertex not in the
         # shortest path tree
@@ -62,6 +70,8 @@ class Graph():
             # the set of vertices not yet processed.
             # x is always equal to src in first iteration
             x = self.minDistance(dist, sptSet)
+            if x == -1:
+                continue
 
             # Put the minimum distance vertex in the
             # shortest path tree

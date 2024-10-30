@@ -8,7 +8,7 @@ Return:
 Length of the shortest path without any red nodes.
 """
 
-from dijsktra import Graph
+from graph import Graph
 import sys
 
 def load_graph_from_file(file):

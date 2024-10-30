@@ -89,26 +89,23 @@ class Graph():
         self.dist = dist
 
     def alt_rec(self, cur_node, reds, visited, wasRed):
-        print(f"cur_node: {cur_node}\nreds: {reds}\nvisited: {visited}\nwasRed: {wasRed}")
+        # print(f"cur_node: {cur_node}\nreds: {reds}\nvisited: {visited}\nwasRed: {wasRed}")
         isRed = True if reds[cur_node] else False
 
         if isRed == wasRed: # Two nodes of same colors in a row
-            print(f"\t{cur_node} was illegal")
+            # print(f"\t{cur_node} was illegal")
             return
         
         if cur_node in visited:
-            print(f"\t{cur_node} was visited")
+            # print(f"\t{cur_node} was visited")
             return
         
         visited.add(cur_node)
-        
-        n = 0
+
         for y in range(self.V):
-            print(n)
             if self.graph[cur_node][y] > 0:
-                print(f"Try {y}")
+                # print(f"Try {y}")
                 self.alt_rec(y, reds, visited, isRed)
-            n += 1
 
         
 
@@ -120,16 +117,15 @@ class Graph():
         # isRed = False if reds[src] else True
         # print("---")
         # print(f"src: {src}\nreds: {reds}\nvisited: {visited}\nisRed: {isRed}")
-        print("---")
+        # print("---")
 
-        self.printGraph()
         # missing = {src}
 
         # for x in range(self.V):
-        print(f"------------ Checking {src} --------------")
+        # print(f"------------ Checking {src} --------------")
         isRed = False if reds[src] else True
         self.alt_rec(src, reds, visited, isRed)
-        print(f"------------ Done with {src} --------------")
+        # print(f"------------ Done with {src} --------------")
 
         return visited
         

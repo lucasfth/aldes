@@ -8,11 +8,12 @@ import os
 sys.path.append(os.path.join(os.path.dirname(__file__), './sol'))
 
 from none import none # type: ignore
+from alternate import alternate # type: ignore
 
 # Defining main function
 def main():
     files = os.listdir('./data')
-    problems = [none()]
+    problems = [none(), alternate()]
     for file in files:
         if file.endswith('.txt'):
             print('Loading', file)

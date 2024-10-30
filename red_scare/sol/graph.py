@@ -89,22 +89,18 @@ class Graph():
         self.dist = dist
 
     def alt_rec(self, cur_node, reds, visited, wasRed):
-        # print(f"cur_node: {cur_node}\nreds: {reds}\nvisited: {visited}\nwasRed: {wasRed}")
         isRed = True if reds[cur_node] else False
 
         if isRed == wasRed: # Two nodes of same colors in a row
-            # print(f"\t{cur_node} was illegal")
             return
         
         if cur_node in visited:
-            # print(f"\t{cur_node} was visited")
             return
         
         visited.add(cur_node)
 
         for y in range(self.V):
             if self.graph[cur_node][y] > 0:
-                # print(f"Try {y}")
                 self.alt_rec(y, reds, visited, isRed)
 
         
@@ -112,31 +108,12 @@ class Graph():
     def alt_dfs(self, src, reds):
 
         visited = set()
-        # visited.add(src)
 
-        # isRed = False if reds[src] else True
-        # print("---")
-        # print(f"src: {src}\nreds: {reds}\nvisited: {visited}\nisRed: {isRed}")
-        # print("---")
-
-        # missing = {src}
-
-        # for x in range(self.V):
-        # print(f"------------ Checking {src} --------------")
         isRed = False if reds[src] else True
         self.alt_rec(src, reds, visited, isRed)
-        # print(f"------------ Done with {src} --------------")
 
         return visited
-        
-        # for x in range(self.V):
-        #     for y in range(self.V):
-        #         if self.graph[x][y] >= 0:
-        #             if y in reds and not isRed:
-        #                 visited.add(y)
-        #                 res.add(self.alt_rec(self, y, reds, visited, isRed))
-        #             elif y not in reds and isRed:
-        #                 visited.add(y)
+
 
     def BFS(self, s, t, parent):
  

@@ -29,7 +29,22 @@ class Graph():
         if d == sys.maxsize:
             return -1
         return d
+    
+    def numRedsInPath (self, terminal, parents, names, reds):
+        path = []
+        counter = 0
+        current_vertex = terminal
+        while current_vertex != -1:
+            path.append(current_vertex)
+            current_vertex = parents[current_vertex]
 
+        for node in path:
+            index = names.get(f"{node}")
+            if reds[index] is True:
+                counter += 1
+        return counter
+
+        
     def add_directed_edge(self, u, v, w):
         self.graph[u][v] = w
     
@@ -58,11 +73,13 @@ class Graph():
     # Function that implements Dijkstra's single source
     # shortest path algorithm for a graph represented
     # using adjacency matrix representation
-    def dijkstra(self, src):
+    def dijkstra(self, src, includeRed):
 
-        dist = [sys.maxsize] * self.V
-        dist[src] = 0
-        sptSet = [False] * self.V
+        dist = [sys.maxsize] * self.V # shortest distance from start to all nodes 
+        dist[src] = 0 # distance from source to source
+        sptSet = [False] * self.V # added
+        parents = [-1] * self.V # Stores the vertices included in the shortest path
+        parents[src] = -1 #There is no shortest path to yourself
 
         for cout in range(self.V):
 
@@ -70,7 +87,7 @@ class Graph():
             # the set of vertices not yet processed.
             # x is always equal to src in first iteration
             x = self.minDistance(dist, sptSet)
-            if x == -1:
+            if includeRed is False and x == -1: #Skips over red nodes
                 continue
 
             # Put the minimum distance vertex in the
@@ -84,6 +101,63 @@ class Graph():
             for y in range(self.V):
                 if self.graph[x][y] >= 0 and sptSet[y] == False and \
                         dist[y] > dist[x] + self.graph[x][y]:
+                    parents[y] = x # add the path
                     dist[y] = dist[x] + self.graph[x][y]
 
         self.dist = dist
+        self.parents = parents
+
+
+
+    #def dijkstraWithReds(self, src): # include red nodes
+
+    #    dist = [sys.maxsize] * self.V
+    #    dist[src] = 0
+    #    sptSet = [False] * self.V
+    #    
+    #    #Added lines
+    #    parents = [-1] * self.V # Stores the vertices included in the shortest path
+    #    parents[src] = -1 #There is no shortest path to yourself
+    #    
+
+    #    for vertex in range(self.V): #Goes through every verte
+
+    #        # Pick the minimum distance vertex from
+    #        # the set of vertices not yet processed.
+    #        # x is always equal to src in first iteration
+    #        x = self.minDistance(dist, sptSet)
+
+
+    #        nearest = -1
+    #        shortest_distance = sys.maxsize
+    #        for vertex_index in range(self.V):
+    #            if sptSet[vertex] == False and dist[vertex_index] < shortest_distance:
+    #                nearest = vertex_index
+    #                shortest_distance = dist[vertex_index]
+
+    #        # Put the minimum distance vertex in the
+    #        # shortest path tree
+    #        sptSet[x] = True
+    #        
+    #        """
+    #        for vertex_index in range(self.V):
+    #            edge_distance = self.graph[nearest][vertex_index]
+
+    #            if edge_distance > 0 and shortest_distance + edge_distance < dist [vertex_index]:
+    #                parent[vertex_index] = nearest
+    #                shortest_distance[vertex_index] = shortest_distance +  edge_distance
+    #        """
+    #            
+
+    #        # Update dist value of the adjacent vertices
+    #        # of the picked vertex only if the current
+    #        # distance is greater than new distance and
+    #        # the vertex in not in the shortest path tree
+    #        for y in range(self.V):
+    #            if self.graph[x][y] >= 0 and sptSet[y] == False and \
+    #                    dist[y] > dist[x] + self.graph[x][y]:
+    #                parents[y] = x # add the path
+    #                dist[y] = dist[x] + self.graph[x][y]
+
+    #    self.dist = dist
+    #    self.parents = parents

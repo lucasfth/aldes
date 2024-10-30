@@ -21,10 +21,10 @@ def load_graph_from_file(file):
         reds = [False for _ in range(n)] # constant time lookup
         s, t = f.readline().split()
         for i in range(n):
-            inp = f.readline().split()
-            if (len(inp) == 2):
+            inp = f.readline().split() 
+            if (len(inp) == 2): 
                 reds[i] = True
-            names[inp[0]] = i
+            names[inp[0]] = i 
         
         for i in range(m):
             u, x, v = f.readline().split()
@@ -39,10 +39,8 @@ def load_graph_from_file(file):
 def run(file):
     graph, s, t = load_graph_from_file(file)
     # graph.printGraph()
-    graph.dijkstra(s)
-    
+    graph.dijkstra(s, False) # False specifies not including red nodes  
     res = graph.distance(t)
-
     print(res)
 
 run("../data/G-ex.txt")

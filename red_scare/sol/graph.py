@@ -30,7 +30,7 @@ class Graph():
         if d == sys.maxsize:
             return -1
         return d
-
+    
     def add_directed_edge(self, u, v, w):
         self.graph[u][v] = w
     
@@ -61,9 +61,11 @@ class Graph():
     # using adjacency matrix representation
     def dijkstra(self, src):
 
-        dist = [sys.maxsize] * self.V
-        dist[src] = 0
-        sptSet = [False] * self.V
+        dist = [sys.maxsize] * self.V # shortest distance from start to all nodes 
+        dist[src] = 0 # distance from source to source
+        sptSet = [False] * self.V # added
+        parents = [-1] * self.V # Stores the vertices included in the shortest path
+        parents[src] = -1 #There is no shortest path to yourself
 
         for cout in range(self.V):
 
@@ -71,7 +73,7 @@ class Graph():
             # the set of vertices not yet processed.
             # x is always equal to src in first iteration
             x = self.minDistance(dist, sptSet)
-            if x == -1:
+            if x == -1: #Skips over red nodes
                 continue
 
             # Put the minimum distance vertex in the
@@ -85,9 +87,13 @@ class Graph():
             for y in range(self.V):
                 if self.graph[x][y] >= 0 and sptSet[y] == False and \
                         dist[y] > dist[x] + self.graph[x][y]:
+                    parents[y] = x # add the path
                     dist[y] = dist[x] + self.graph[x][y]
 
         self.dist = dist
+        self.parents = parents
+
+
 
     def alt_rec(self, cur_node, reds, visited, wasRed):
         isRed = True if reds[cur_node] else False

@@ -10,6 +10,7 @@ sys.path.append(os.path.join(os.path.dirname(__file__), './sol'))
 
 from none import none # type: ignore
 from alternate import alternate # type: ignore
+from few import few # type: ignore
 
 # Defining a function to run a problem on a file
 def run_problem(problem, file):
@@ -18,7 +19,7 @@ def run_problem(problem, file):
 # Defining main function
 def main():
     files = os.listdir('./data')
-    problems = [none(), alternate()]
+    problems = [none(), alternate(), few()]
     threads = []
 
     for file in files:

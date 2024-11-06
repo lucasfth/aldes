@@ -26,20 +26,21 @@ def load_graph_from_file(file):
         
         for i in range(m): # m = number edges
             u, x, v = f.readline().split() # u = node from, x = --, v = node to
-            w = -1 if reds[names[v]] else 1 # 0, so it priorities black nodes ie. giving us the path with least amount of reds
+            # w = -1 if reds[names[v]] else 1 # 0, so it priorities black nodes ie. giving us the path with least amount of reds
             if x == '--': # 
-                g.add_undirected_edge(names[u], names[v], w)
+                g.add_directed_edge(names[v], names[u], 1 if reds[names[u]] else 0) # if undirected add directions both ways
+                g.add_directed_edge(names[u], names[v], 1 if reds[names[v]] else 0)
             else:
-                g.add_directed_edge(names[u], names[v], w)
+                g.add_directed_edge(names[u], names[v], 1 if reds[names[v]] else 0)
                 
         return g, names[s], names[t], names, reds
 
 def run(file):
-    graph, s, t, names, reds = load_graph_from_file(file)
+    graph, s, t, _ , _ = load_graph_from_file(file)
     graph.dijkstra(s, True)
-    res = graph.numRedsInPath(t, graph.parents, names, reds)
+    res = graph.distance(t)
     
     print(res)
 
-run("../data/G-ex.txt")
+run("../data/graph-with-red.txt")
  

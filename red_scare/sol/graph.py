@@ -5,6 +5,7 @@
 # for adjacency matrix representation of the graph
 
 # Library for INT_MAX
+from collections import deque
 import sys
 sys.setrecursionlimit(10000)
 
@@ -115,34 +116,19 @@ class Graph():
         return visited
 
 
-    def BFS(self, s, t, parent):
- 
-        # Mark all the vertices as not visited
-        visited = {s}
- 
-        # Create a queue for BFS
+    def BFS(self, s, t):
+        self.dist = [sys.maxsize] * self.V # Sets distance from s to all nodex to max int
+        self.dist[s] = 0 # Distance from s to s is 0
         queue = deque([s])
- 
-         # Standard BFS Loop
-        while queue:
- 
-            # Dequeue a vertex from queue and print it
+
+        while queue: # While queue is not empty
             u = queue.popleft()
- 
-            # Get all adjacent vertices of the dequeued vertex u
-            # If a adjacent has not been visited, then mark it
-            # visited and enqueue it
-            for v in self.adj_list[u]:
-                if v not in visited and self.capacity[u][v] > 0:
-                      # If we find a connection to the sink node, 
-                    # then there is no point in BFS anymore
-                    # We just have to set its parent and can return true
-                    queue.append(v)
-                    visited.add(v)
-                    parent[v] = u
-                    if v == sink:
-                        return True
- 
-        # We didn't reach sink in BFS starting 
-        # from source, so return false
-        return False
+            
+            for v in range(self.V): # Iterate over all possible neighbors in the row
+                if self.graph[u][v] >= 0 and self.dist[v] > self.dist[u] + 1: # Only consider non-negative edges
+                    self.dist[v] = self.dist[u] + 1
+                    queue.append(v) 
+                    if v == t:
+                        return self.dist[t] # Early exit if we reach the target
+
+        return self.distance(t)

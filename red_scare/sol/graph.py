@@ -58,7 +58,7 @@ class Graph():
     # Function that implements Dijkstra's single source
     # shortest path algorithm for a graph represented
     # using adjacency matrix representation
-    def dijkstra(self, src, includeRed):
+    def dijkstra(self, src):
 
         dist = [sys.maxsize] * self.V # shortest distance from start to all nodes 
         dist[src] = 0 # distance from source to source
@@ -72,7 +72,7 @@ class Graph():
             # the set of vertices not yet processed.
             # x is always equal to src in first iteration
             x = self.minDistance(dist, sptSet)
-            if includeRed is False and x == -1: #Skips over red nodes
+            if x == -1: #Skips over red nodes
                 continue
 
             # Put the minimum distance vertex in the

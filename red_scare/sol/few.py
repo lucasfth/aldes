@@ -37,7 +37,7 @@ def load_graph_from_file(file):
 
 def run(file):
     graph, s, t, _ , _ = load_graph_from_file(file)
-    graph.dijkstra(s, True)
+    graph.dijkstra(s)
     res = graph.distance(t)
     
     print(res)

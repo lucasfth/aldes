@@ -6,7 +6,7 @@
 
 # Library for INT_MAX
 import sys
-
+sys.setrecursionlimit(10000)
 
 class Graph():
 
@@ -161,3 +161,62 @@ class Graph():
 
     #    self.dist = dist
     #    self.parents = parents
+
+    def alt_rec(self, cur_node, reds, visited, wasRed):
+        isRed = True if reds[cur_node] else False
+
+        if isRed == wasRed: # Two nodes of same colors in a row
+            return
+        
+        if cur_node in visited:
+            return
+        
+        visited.add(cur_node)
+
+        for y in range(self.V):
+            if self.graph[cur_node][y] > 0:
+                self.alt_rec(y, reds, visited, isRed)
+
+        
+
+    def alt_dfs(self, src, reds):
+
+        visited = set()
+
+        isRed = False if reds[src] else True
+        self.alt_rec(src, reds, visited, isRed)
+
+        return visited
+
+
+    def BFS(self, s, t, parent):
+ 
+        # Mark all the vertices as not visited
+        visited = {s}
+ 
+        # Create a queue for BFS
+        queue = deque([s])
+ 
+         # Standard BFS Loop
+        while queue:
+ 
+            # Dequeue a vertex from queue and print it
+            u = queue.popleft()
+ 
+            # Get all adjacent vertices of the dequeued vertex u
+            # If a adjacent has not been visited, then mark it
+            # visited and enqueue it
+            for v in self.adj_list[u]:
+                if v not in visited and self.capacity[u][v] > 0:
+                      # If we find a connection to the sink node, 
+                    # then there is no point in BFS anymore
+                    # We just have to set its parent and can return true
+                    queue.append(v)
+                    visited.add(v)
+                    parent[v] = u
+                    if v == sink:
+                        return True
+ 
+        # We didn't reach sink in BFS starting 
+        # from source, so return false
+        return False

@@ -1,0 +1,25 @@
+10 13 6
+a t
+a
+b *
+c *
+d
+e *
+f *
+g
+h *
+i *
+t
+a -- b
+a -- c
+a -- d
+b -- e
+c -- f
+c -- g
+c -- i
+c -- t
+d -- g
+e -- f
+f -- h
+h -- t
+i -- t

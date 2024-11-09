@@ -40,7 +40,7 @@ class none():
     def run(self, file):
         graph, s, t = self.load_graph_from_file(file)
         # graph.printGraph()
-        graph.BFS(s, t, )
+        res = graph.BFS(s, t)
         
         res = graph.distance(t)
 

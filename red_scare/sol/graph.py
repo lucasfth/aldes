@@ -95,46 +95,37 @@ class Graph():
 
 
 
-    def alt_rec(self, cur_node, reds, visited, wasRed):
-        isRed = True if reds[cur_node] else False
-
-        if isRed == wasRed: # Two nodes of same colors in a row
-            return
-        
+    def alt_rec(self, cur_node, visited):
         if cur_node in visited:
             return
         
         visited.add(cur_node)
 
         for y in range(self.V):
-            if self.graph[cur_node][y] > 0:
-                self.alt_rec(y, reds, visited, isRed)
+            if self.graph[cur_node][y] > 0 and y not in visited:
+                self.alt_rec(y, visited)
 
         
 
-    def alt_dfs(self, src, reds):
-
+    def alt_dfs(self, src):
         visited = set()
-
-        isRed = False if reds[src] else True
-        self.alt_rec(src, reds, visited, isRed)
-
+        self.alt_rec(src, visited)
         return visited
 
 
     def BFS(self, s, t):
-        self.dist = [sys.maxsize] * self.V # Sets distance from s to all nodex to max int
-        self.dist[s] = 0 # Distance from s to s is 0
+        self.dist = [sys.maxsize] * self.V  # Sets distance from s to all nodes to max int
+        self.dist[s] = 0  # Distance from s to s is 0
         queue = deque([s])
 
-        while queue: # While queue is not empty
+        while queue:  # While queue is not empty
             u = queue.popleft()
-            
-            for v in range(self.V): # Iterate over all possible neighbors in the row
-                if self.graph[u][v] >= 0 and self.dist[v] > self.dist[u] + 1: # Only consider non-negative edges
-                    self.dist[v] = self.dist[u] + 1
-                    queue.append(v) 
-                    if v == t:
-                        return self.dist[t] # Early exit if we reach the target
 
-        return self.distance(t)
+            for v in self.graph[u]:  # Only iterate over actual neighbors
+                if self.dist[v] > self.dist[u] + 1:  # Only consider shorter paths
+                    self.dist[v] = self.dist[u] + 1
+                    queue.append(v)
+                    if v == t:
+                        return self.dist[t]  # Early exit if we reach the target
+
+        return self.dist[t] if self.dist[t] != sys.maxsize else -1  # Return distance or -1 if unreachable

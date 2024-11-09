@@ -27,16 +27,18 @@ class alternate():
 
             for i in range(m):
                 u, x, v = f.readline().split()
-                if x == '--':
-                    g.add_undirected_edge(names[u], names[v], 1)
-                else:
-                    g.add_directed_edge(names[u], names[v], 1)
+                u_idx, v_idx = names[u], names[v]
+                if reds[u_idx] != reds[v_idx]:
+                    if x == '--':
+                        g.add_undirected_edge(names[u], names[v], 1)
+                    else:
+                        g.add_directed_edge(names[u], names[v], 1)
 
             return g, names[s], names[t], reds
 
 
     def run(self, file):
         graph, s, t, r = self.load_graph_from_file(file)
-        res = graph.alt_dfs(s, r)
+        res = graph.alt_dfs(s)
 
         print(f"  alternate: {t in res}")

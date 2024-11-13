@@ -11,11 +11,12 @@ from none import none # type: ignore
 from alternate import alternate # type: ignore
 from few import few # type: ignore
 from some import some # type: ignore
+from some2 import some2 # type: ignore
 
 # Defining main function
 def main():
     files = os.listdir('./data')
-    problems = [none(), alternate(), few(), some()]
+    problems = [none(), alternate(), few(), some(), some2()]
 
     for file in files:
         if file.endswith('.txt'):

@@ -48,33 +48,31 @@ class some2():
                     g.add_directed_edge(names[v] + n, names[u], 1)
                     
                 else:
-                    return False
-                    # raise NotImplementedError("Cannot handle directed edges")
+                    raise NotImplementedError("Cannot handle directed edges")
                     # g.add_directed_edge(names[u], names[v], 1)
 
             return g, names[s], names[t], reds, n
 
 
     def run(self, file):
-        graph, s, t, r, n = self.load_graph_from_file(file)
-        
-        if not graph:
-            print("  some2: Cannot handle directed edges")
-            return
+        try:
+            graph, s, t, r, n = self.load_graph_from_file(file)
 
-        for i in range(len(r)):
-            if r[i]:
-                g = graph.clone()
-                res = g.FordFulkerson(i + n, s + n)
-                # print(f"  {i} to source: {res}")
-                if res == 1:
-                    res = g.FordFulkerson(i + n, t + n)
-                    # print(f"  {i} to target: {res}")
+            for i in range(len(r)):
+                if r[i]:
+                    g = graph.clone()
+                    res = g.FordFulkerson(i + n, s + n)
+                    # print(f"  {i} to source: {res}")
                     if res == 1:
-                        print("  some2: True")
-                        return
+                        res = g.FordFulkerson(i + n, t + n)
+                        # print(f"  {i} to target: {res}")
+                        if res == 1:
+                            print("  some2: True")
+                            return
 
-        print("  some2: False")
+            print("  some2: False")
+        except Exception as e:
+            print(e)
 
 if __name__ == "__main__":
     start = time.time()

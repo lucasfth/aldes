@@ -7,7 +7,7 @@
 # Library for INT_MAX
 from collections import deque
 import sys
-sys.setrecursionlimit(10000)
+sys.setrecursionlimit(100000)
 
 class Graph():
 
@@ -36,7 +36,7 @@ class Graph():
     
     def add_undirected_edge(self, u, v, w):
         self.add_directed_edge(u, v, w)
-        self.add_directed_edge(v, u, w)    
+        self.add_directed_edge(v, u, w)
     
     # A utility function to find the vertex with
     # minimum distance value, from the set of vertices
@@ -94,7 +94,6 @@ class Graph():
         self.parents = parents
 
 
-
     def alt_rec(self, cur_node, visited):
         if cur_node in visited:
             return
@@ -104,13 +103,40 @@ class Graph():
         for y in range(self.V):
             if self.graph[cur_node][y] > 0 and y not in visited:
                 self.alt_rec(y, visited)
-
         
 
     def alt_dfs(self, src):
         visited = set()
         self.alt_rec(src, visited)
         return visited
+    
+
+    def some_rec(self, cur_node, reds, visited, sink, hasEncounteredRed):
+        if cur_node == sink:
+            return hasEncounteredRed
+        
+        if cur_node in visited:
+            return False
+
+        visited.add(cur_node)
+
+        curHasEncounteredRed = hasEncounteredRed or reds[cur_node]
+
+        for y in range(self.V):
+            if self.graph[cur_node][y] > 0 and y not in visited:
+                if self.some_rec(y, reds, visited, sink, curHasEncounteredRed):
+                    return True
+
+        return False
+    
+
+    def some_dfs(self, src, sink, reds):
+
+        visited = set()
+
+        hasEncounteredRed = reds[src]
+        
+        return self.some_rec(src, reds, visited, sink, hasEncounteredRed)
 
 
     def BFS(self, s, t):

@@ -116,35 +116,6 @@ class Graph():
         visited = set()
         self.alt_rec(src, visited)
         return visited
-    
-
-    def some_rec(self, cur_node, reds, visited, sink, hasEncounteredRed):
-        if cur_node == sink:
-            return hasEncounteredRed
-        
-        if cur_node in visited:
-            return False
-
-        visited.add(cur_node)
-
-        curHasEncounteredRed = hasEncounteredRed or reds[cur_node]
-
-        for y in range(self.V):
-            if self.graph[cur_node][y] > 0 and y not in visited:
-                if self.some_rec(y, reds, visited, sink, curHasEncounteredRed):
-                    return True
-
-        return False
-    
-
-    def some_dfs(self, src, sink, reds):
-
-        visited = set()
-
-        hasEncounteredRed = reds[src]
-        
-        return self.some_rec(src, reds, visited, sink, hasEncounteredRed)
-
 
     def BFS(self, s, t):
         self.dist = [sys.maxsize] * self.V  # Sets distance from s to all nodes to max int

@@ -48,7 +48,7 @@ class some():
                     g.add_directed_edge(names[v] + n, names[u], 1)
                     
                 else:
-                    raise NotImplementedError("Cannot handle directed edges")
+                    raise NotImplementedError("  some: skipping directed graph")
                     # g.add_directed_edge(names[u], names[v], 1)
 
             return g, names[s], names[t], reds, n

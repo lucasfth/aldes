@@ -147,7 +147,9 @@ class Graph():
         while queue:  # While queue is not empty
             u = queue.popleft()
 
-            for v in self.graph[u]:  # Only iterate over actual neighbors
+            # Iterate over actual neighbors with non-negative edges
+            for v in range(self.V):
+                if self.graph[u][v] == -1: continue  # Skip negative edges
                 if self.dist[v] > self.dist[u] + 1:  # Only consider shorter paths
                     self.dist[v] = self.dist[u] + 1
                     queue.append(v)

@@ -15,6 +15,7 @@ class none():
     def load_graph_from_file(self, file):
         names = {}
         reds = []
+        startIndex = -1
         
         with open(file, 'r') as f:
             n, m, r = map(int, f.readline().split())
@@ -23,6 +24,7 @@ class none():
             s, t = f.readline().split()
             for i in range(n):
                 inp = f.readline().split()
+                if(inp[0] == s): startIndex = i
                 if (len(inp) == 2):
                     reds[i] = True
                 names[inp[0]] = i
@@ -30,6 +32,8 @@ class none():
             for i in range(m):
                 u, x, v = f.readline().split()
                 w = -1 if reds[names[v]] else 1
+                if i == startIndex and reds[startIndex]:
+                    w = -1
                 if x == '--':
                     g.add_undirected_edge(names[u], names[v], w)
                 else:

@@ -22,11 +22,13 @@ def load_file(file_name):
     with open(file_name, "r") as file:
         n, m, r = map(int, file.readline().split())
         graph = defaultdict(dict)
+        verts = []
         reds = set()
         s, t = file.readline().split()
         for _ in range(n):
             input = file.readline().split()
             v = input[0]
+            verts.append(v)
             if len(input) == 2:
                 reds.add(v)
         for i in range(m):
@@ -36,15 +38,33 @@ def load_file(file_name):
                 return None
             w = 1 if b in reds else 0
             graph[a][b] = w
-        return n, graph, reds, s, t
+        return n, graph, verts, reds, s, t
 
 
-def topological_sort(v, graph, stack, visited):
+def dfs(v, graph, visited, rec_stack, stack):
     visited[v] = True
+    rec_stack[v] = True
     for u in graph[v]:
         if not visited[u]:
-            topological_sort(u, graph, stack, visited)
+            if dfs(u, graph, visited, rec_stack, stack):
+                return True
+        elif rec_stack[u]:
+            return True
+    rec_stack[v] = False
     stack.append(v)
+    return False
+
+
+def topological_sort(verts, graph):
+    stack = []
+    visited = defaultdict(lambda: False)
+    rec_stack = defaultdict(lambda: False)
+    for v in verts:
+        if not visited[v]:
+            if dfs(v, graph, visited, rec_stack, stack):
+                # Graph is cyclic, which we cannot solve for.
+                return None
+    return stack
 
 
 def solve(file_name):
@@ -52,13 +72,14 @@ def solve(file_name):
     if parsed is None:
         print(f"Cannot solve Many for undirected graph: {path.basename(file_name)}")
         return
-    n, graph, reds, s, t = parsed
+    n, graph, verts, reds, s, t = parsed
     print(graph)
-    stack = []
-    visited = defaultdict(lambda: False)
     dist = defaultdict(lambda: float("-inf"))
     dist[s] = 0
-    topological_sort(s, graph, stack, visited)
+    stack = topological_sort(verts, graph)
+    if stack is None:
+        print(f"Cannot solve Many for cyclic graph: {path.basename(file_name)}")
+        return
     while len(stack) > 0:
         v = stack.pop()
         for u, w in graph[v].items():
@@ -79,7 +100,7 @@ def add_verts_and_edges(v, graph, reds, verts, edges, visited):
 
 
 def visualize(file_name):
-    n, graph, reds, s, t = load_file(file_name)
+    n, graph, verts, reds, s, t = load_file(file_name)
     print(f"start: {s}, target: {t}")
     verts = []
     edges = []

@@ -48,6 +48,6 @@ class none():
         
         res = graph.distance(t)
 
-        print('  none:', res)
+        return str(res)
 
 # run("../data/G-ex.txt")

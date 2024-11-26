@@ -63,8 +63,7 @@ class some():
             graph, s, t, r, n, directed = self.load_graph_from_file(file)
             if graph == None:
                 # No edges at all, only "True" if source and target is the same node and is red
-                print(f"  some: {s == t and r[s]}")
-                return
+                return str(s == t and r[s])
 
             if directed:
                 foundPath = False
@@ -80,20 +79,19 @@ class some():
                                 foundPath = True
                                 break
                             graph.RevertPath(s, i + n, path1)
-
-                print(f"  some: {foundPath}")
+                return str(foundPath)
             else:
                 if graph.IsCyclic():
                     # Check for cycles (we can even begin with a quick check based on the number of vertices and edges)
-                    raise NotImplementedError("  some: skipping cyclic graph")
+                    return("skip cyc g")
                 else:
                     # If no cycles, we can solve the problem with path algorithm and checking if path contains a red node
                     path = [-1] * n
                     foundPathWithRedNode = graph.BFS_with_path(s, t, path) and graph.PathContainsRedNode(s, t, path, r)
-                    print(f"  some: {foundPathWithRedNode}")
+                    return str(foundPathWithRedNode)
                     
         except Exception as e:
-            print(e)
+            return "Error"
 
 if __name__ == "__main__":
     start = time.time()

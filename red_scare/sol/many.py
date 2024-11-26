@@ -64,18 +64,16 @@ class many:
     def run(self, file_name):
         parsed = self.load_file(file_name)
         if parsed is None:
-            print("  many: skipping undirected graph")
-            return
+            return "skip undir g"
         n, graph, verts, reds, s, t = parsed
         dist = defaultdict(lambda: -1)
         dist[s] = 0
         stack = self.topological_sort(verts, graph)
         if stack is None:
-            print("  many: skipping cyclic graph")
-            return
+            return "skip cyclic g"
         while len(stack) > 0:
             v = stack.pop()
             for u, w in graph[v].items():
                 dist[u] = max(dist[u], dist[v] + w)
         result = dist[t] + 1 if s in reds else dist[t]
-        print(f"  many: {result}")
+        return str(result)

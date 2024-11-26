@@ -220,7 +220,7 @@ class Graph:
                         if dfs(neighbor, node):  # Recursive DFS
                             return True
                     elif neighbor != parent:  # Cycle detected
-                        print(f"Cycle detected: {node} -> {neighbor}")
+                        # print(f"Cycle detected: {node} -> {neighbor}")
                         return True
             return False
 

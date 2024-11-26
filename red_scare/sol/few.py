@@ -48,5 +48,5 @@ class few():
         graph, s, t, _ , _ = self.load_graph_from_file(file)
         graph.dijkstra(s)
         res = graph.distance(t)
-        print(f"  few: {res}")
+        return str(res)
  

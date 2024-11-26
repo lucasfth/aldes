@@ -41,4 +41,4 @@ class alternate():
         graph, s, t, r = self.load_graph_from_file(file)
         res = graph.alt_dfs(s)
 
-        print(f"  alternate: {t in res}")
+        return str(t in res)

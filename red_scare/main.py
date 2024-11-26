@@ -31,14 +31,17 @@ def main():
             row = [file]
             for problem in problems:
                 s_t = time.time()
-                problem.run("./data/" + file)
+                res = problem.run("./data/" + file)
                 e_t = time.time()
+                print(f"\t{problem.__class__.__name__}: {res}")
                 delta = e_t - s_t
-                row.append(f"{delta:.6f}s")
+                row.append(f"s: {res} - t: {delta:.6f}s")
             running_time.append(row)
 
     print(tabulate(running_time, headers="firstrow", tablefmt="grid"))
 
+    with open("./results.txt", "w") as f:
+        f.write(tabulate(running_time, headers="firstrow", tablefmt="grid"))
 
 if __name__ == "__main__":
     main()

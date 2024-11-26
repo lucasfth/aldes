@@ -4,6 +4,12 @@ Cores: 12
 Memory: 18GB
 OS: MacOS 15.1.1
 
+Abbreviations:
+s is for the solution/answer of the algorithm from running the specific file
+t is for the time it takes for the algorithm to run the specific file
+undir is for undirected
+cyc is for cyclic
+g is for graph
 
 +----------------------+-----------------------+---------------------------+-----------------------+--------------------------------+--------------------------------+
 | File                 | none                  | alternate                 | few                   | some                           | many                           |

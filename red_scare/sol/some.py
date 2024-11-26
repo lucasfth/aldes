@@ -30,7 +30,6 @@ class some():
 
         with open(file, 'r') as f:
             n, m, r = map(int, f.readline().split())
-            g = Graph(n*2, 0)
             reds = [False for _ in range(n)]  # constant time lookup
             s, t = f.readline().split()
             for i in range(n):
@@ -39,43 +38,64 @@ class some():
                     reds[i] = True
                 names[inp[0]] = i
                 
-                g.add_directed_edge(i, i + n, 1)
+            g = None
+            directed = False
 
             for i in range(m):
                 u, x, v = f.readline().split()
-                if x == '--':
-                    g.add_directed_edge(names[u] + n, names[v], 1)
-                    g.add_directed_edge(names[v] + n, names[u], 1)
-                    
+                directed = x != '--'
+                if g is None:
+                    g = Graph(n*2 if directed else n, 0)
+                if directed:
+                    g.add_directed_edge(names[u] + n, names[v], 1) # size is 2n for node splitting
                 else:
-                    raise NotImplementedError("  some: skipping directed graph")
-                    # g.add_directed_edge(names[u], names[v], 1)
+                    g.add_undirected_edge(names[u], names[v], 1) # size is only n since we don't have node splitting
 
-            return g, names[s], names[t], reds, n
+            if directed:
+                for i in range(n):
+                    g.add_directed_edge(i, i + n, 1)
+
+            return g, names[s], names[t], reds, n, directed
 
 
     def run(self, file):
         try:
-            graph, s, t, r, n = self.load_graph_from_file(file)
+            graph, s, t, r, n, directed = self.load_graph_from_file(file)
+            if graph == None:
+                # No edges at all, only "True" if source and target is the same node and is red
+                print(f"  some: {s == t and r[s]}")
+                return
 
-            for i in range(len(r)):
-                if r[i]:
-                    g = graph.clone()
-                    res = g.FordFulkerson(i + n, s + n)
-                    # print(f"  {i} to source: {res}")
-                    if res == 1:
-                        res = g.FordFulkerson(i + n, t + n)
-                        # print(f"  {i} to target: {res}")
-                        if res == 1:
-                            print("  some: True")
-                            return
+            if directed:
+                foundPath = False
 
-            print("  some: False")
+                for i in range(n):
+                    if foundPath:
+                        break
+                    if r[i]:
+                        flow, path1 = graph.FordFulkerson(s, i + n)
+                        if flow == 1:
+                            flow, _ = graph.FordFulkerson(i + n, t + n)
+                            if flow == 1:
+                                foundPath = True
+                                break
+                            graph.RevertPath(s, i + n, path1)
+
+                print(f"  some: {foundPath}")
+            else:
+                if graph.IsCyclic():
+                    # Check for cycles (we can even begin with a quick check based on the number of vertices and edges)
+                    raise NotImplementedError("  some: skipping cyclic graph")
+                else:
+                    # If no cycles, we can solve the problem with path algorithm and checking if path contains a red node
+                    path = [-1] * n
+                    foundPathWithRedNode = graph.BFS_with_path(s, t, path) and graph.PathContainsRedNode(s, t, path, r)
+                    print(f"  some: {foundPathWithRedNode}")
+                    
         except Exception as e:
             print(e)
 
 if __name__ == "__main__":
     start = time.time()
-    some().run("../data/G-ex.txt")
+    some().run("../data/acyclic.txt")
     print("  Time elapsed:", time.time() - start)
-    

@@ -181,33 +181,57 @@ class Graph:
     def FordFulkerson(self, source, sink):
 
         # This array is filled by BFS and to store path
-        parent = [-1] * (self.V)
-
-        max_flow = 0  # There is no flow initially
-
-        # Augment the flow while there is path from source to sink
-        while self.BFS_with_path(source, sink, parent):
-
-            # Find minimum residual capacity of the edges along the
-            # path filled by BFS. Or we can say find the maximum flow
-            # through the path found.
-            path_flow = float("Inf")
-            s = sink
-            while s != source:
-                path_flow = min(path_flow, self.graph[parent[s]][s])
-                s = parent[s]
-
+        parent = [-1]*(self.V)
+ 
+        max_flow = 0 # There is no flow initially
+ 
+        # Find a path
+        if self.BFS_with_path(source, sink, parent) :
             # Add path flow to overall flow
-            max_flow += path_flow
-
+            max_flow +=  1
+ 
             # update residual capacities of the edges and reverse edges
             # along the path
             v = sink
             while v != source:
                 u = parent[v]
-                self.graph[u][v] -= path_flow
-                self.graph[v][u] += path_flow
+                self.graph[u][v] -= 1
+                self.graph[v][u] += 1
                 v = parent[v]
+ 
+        return (max_flow, parent)
+    
+    def RevertPath(self, source, sink, parent):
+        v = sink
+        while(v !=  source):
+            u = parent[v]
+            self.graph[u][v] += 1
+            self.graph[v][u] -= 1
+            v = parent[v]
 
-        return max_flow
+    def IsCyclic(self):
+        visited = [False] * self.V
 
+        def dfs(node, parent):
+            visited[node] = True
+            for neighbor, w in enumerate(self.graph[node]):
+                if w > 0:
+                    if not visited[neighbor]:
+                        if dfs(neighbor, node):  # Recursive DFS
+                            return True
+                    elif neighbor != parent:  # Cycle detected
+                        print(f"Cycle detected: {node} -> {neighbor}")
+                        return True
+            return False
+
+        for v in range(self.V):  # Check all components
+            if not visited[v] and dfs(v, -1):
+                return True
+        return False
+    
+    def PathContainsRedNode(self, s, t, path, reds):
+        while t != s:
+            if reds[t]:
+                return True
+            t = path[t]
+        return False

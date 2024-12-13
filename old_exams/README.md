@@ -4,7 +4,7 @@ This folder was created for studying for the 16th of December 2024 ALDES exam.
 
 ## NP-hard
 
-You can find an overview of NP-hard problems [here](./np_hard.md).
+You can find an overview of NP-hard problems [here](./np_hard.md) (thanks to [Guldborg](https://github.com/a-guldborg) for creating the document).
 Though note that **knapsack** is not a normal NP-hard problem, but can become NP-hard if the integers become insanely large (as it then takes time for basic arithmetic operations and fills up the memory).
 
 ## Exam sets

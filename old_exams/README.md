@@ -20,3 +20,9 @@ Though note that **knapsack** is not a normal NP-hard problem, but can become NP
 4. [2023 january exam set](./2023_jan.md)
   This was my fourth exam set, and it should be fine.
   None of it has been validated but I feel like it should be fine.
+5. [2021 (2) exam set](./2021_2.md)
+  This was my fifth exam set, and it should be fine.
+  None of it has been validated but I feel like it should be fine.
+6. [2023 december exam set](./2023_dec.md)
+  This was my sixth exam set, and it should be fine.
+  None of it has been validated but I feel like it should be fine.
